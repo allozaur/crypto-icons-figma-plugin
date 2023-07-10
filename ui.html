@@ -1,0 +1,98 @@
+<html>
+
+<head>
+  <style>
+    body {
+      display: grid;
+      align-items: start;
+      align-content: start;
+      gap: 1rem;
+      padding: 1rem;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+
+    #svgs {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(4rem, 1fr));
+    }
+
+    button {
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      display: grid;
+      font-size: 1rem;
+      gap: 0.5rem;
+      place-content: center;
+      place-items: center;
+      padding: 1.25rem;
+      text-align: center;
+    }
+
+    button:hover {
+      background: rgb(244, 244, 244);
+    }
+
+    input {
+      font-size: 1rem;
+      place-self: stretch;
+      padding: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Crypto Tokens Icons</h1>
+  <input type="search" id="search" placeholder="Search crypto icons" />
+  <div id="svgs"></div>
+
+  <script>
+    function addSvg(svgUrl) {
+      fetch(svgUrl)
+        .then(response => response.text())
+        .then(svgString => {
+          parent.postMessage({ pluginMessage: { type: 'add-svg', svgString } }, '*');
+        })
+        .catch(error => console.error(error));
+    }
+
+    let filesArray = [];
+
+    fetch('https://api.github.com/repos/spothq/cryptocurrency-icons/contents/svg/color')
+      .then(response => response.json())
+      .then(files => {
+        filesArray = files;
+        renderIcons(filesArray);
+      })
+      .catch(error => console.error(error));
+
+    function renderIcons(files) {
+      const svgsDiv = document.getElementById('svgs');
+      svgsDiv.innerHTML = '';
+      files.forEach(file => {
+        const button = document.createElement('button');
+        const svgName = file.name.split('.')[0];
+        button.dataset.name = svgName;
+        button.innerHTML = `<span class="label">${svgName}</span>`;
+
+        const img = document.createElement('img');
+        img.src = file.download_url;
+        img.height = 24;
+        button.prepend(img); // prepend the image before the text
+
+        button.onclick = function () {
+          addSvg(file.download_url);
+        };
+        svgsDiv.appendChild(button);
+      });
+    }
+
+    document.getElementById('search').addEventListener('input', (e) => {
+      const searchTerm = e.target.value.toLowerCase();
+      const filteredFiles = filesArray.filter(file => file.name.toLowerCase().includes(searchTerm));
+      renderIcons(filteredFiles);
+    });
+  </script>
+</body>
+
+</html>

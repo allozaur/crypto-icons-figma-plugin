@@ -1,0 +1,20 @@
+{
+  "name": "Crypto Tokens",
+  "id": "1260224476233328490",
+  "api": "1.0.0",
+  "main": "code.js",
+  "capabilities": [],
+  "enableProposedApi": false,
+  "editorType": [
+    "figma"
+  ],
+  "ui": "ui.html",
+  "networkAccess": {
+    "allowedDomains": [
+      "https://errors.figma.com",
+      "https://www.figma.com",
+      "https://api.github.com",
+      "https://raw.githubusercontent.com"
+    ]
+  }
+}
