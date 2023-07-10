@@ -1,7 +1,7 @@
 {
   "name": "Crypto Icons",
   "id": "1260224476233328490",
-  "api": "1.0.1",
+  "api": "1.0.0",
   "main": "code.js",
   "capabilities": [],
   "enableProposedApi": false,
